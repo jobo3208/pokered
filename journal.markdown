@@ -1,3 +1,6 @@
+## Initial Tweaks ##
+Tue 04 Aug 2015 06:55:29 PM EDT
+
 First thing: change the "NEW GAME" text in the main menu. I chose that because
 it was easy to find (`git grep "NEW GAME"`) and because it appears right after
 the title screen. That second point got me thinking about something that's
@@ -89,3 +92,16 @@ call it an overflow. Or an "out-of-bounds". To fix this, we have to change the
 argument to `and`. If I want to choose between two pokémon, I'd do `and $1`, 
 because we only want a single random bit. The Jynx/Mime patch is at 
 `patches/jynx_mime_title_screen.patch`.
+
+
+## Save File Manipulation ##
+Wed 05 Aug 2015 11:19:58 PM EDT
+
+I think the key to jumping into whichever situation I want with whichever 
+pokémon I want will be manipulating the save file. That's one way to do it, 
+anyway. VisualBoyAdvance makes a save file in `~/.vba` and names it after the 
+ROM you're using. I haven't quite figured out which parts of the Game Boy's 
+memory are saved in here, but I was able to find the player name after saving a 
+file. I tried changing the name without changing its length (`ASH` to `JIM`), 
+but that didn't work, presumably because there's a checksum in there that I 
+didn't recalculate. That will be the next thing I try.
