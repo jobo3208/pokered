@@ -105,3 +105,29 @@ memory are saved in here, but I was able to find the player name after saving a
 file. I tried changing the name without changing its length (`ASH` to `JIM`), 
 but that didn't work, presumably because there's a checksum in there that I 
 didn't recalculate. That will be the next thing I try.
+
+
+## Changing Player Name ##
+Sat 08 Aug 2015 07:09:49 PM EDT
+
+I was able to change the player name in the save file! This consisted of first 
+changing the name, then updating the checksum accordingly. I didn't change the 
+length of the name -- though maybe I'll try that next. I just went from `ASH` 
+to `ASS`. I tried to manually step through the `SAVCheckSum` function, but I 
+saw that it was going to involve many iterations. So I wrote a little python 
+script to do it for me. I initialized the registers exactly as they would be in 
+the game, and walked through the actual `pokered.sav` file. I first tested to 
+see if it would give me the same result as what was already in the file, and it 
+did! Then I changed the name and reran it, updated the checksum accordingly, 
+and it worked! I could easily take it a step further and have it automatically 
+write the new checksum to the file. I feel like this is a nice first step in 
+modifying the save file however I want, though a small one for sure.
+
+One other note -- I could have opted instead to modify the game code to use the 
+`LoadSAVIgnoreBadCheckSum` routine that already exists, but I ran into 
+difficulty. The current `LoadSAV` function that I'd have to swap out is special 
+for some reason. It's not called with `call`, but instead some macro called 
+`predef`. I followed the code for the "predef" process and I'm still not really 
+clear on what it's doing. It's "predefining" somehow, but I don't know what 
+that means. I tried just `call`ing `LoadSAVIgnoreBadCheckSum`, but that blew 
+up. I'll probably have to revisit `predef` at some point.
