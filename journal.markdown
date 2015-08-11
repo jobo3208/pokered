@@ -131,3 +131,28 @@ for some reason. It's not called with `call`, but instead some macro called
 clear on what it's doing. It's "predefining" somehow, but I don't know what 
 that means. I tried just `call`ing `LoadSAVIgnoreBadCheckSum`, but that blew 
 up. I'll probably have to revisit `predef` at some point.
+
+
+## Changing Pokémon Identity ##
+Mon 10 Aug 2015 09:41:59 PM EDT
+
+I played a couple minutes of the game in order to get a pokémon. Bulbasaur, in 
+my case. The first thing I thought to try when looking through `sPartyData` was 
+to change Bulbasaur's species. Bulbs's ID in `constants/pokemon_constants.asm` 
+is `99`, so I simply decremented to `98` for Starmie. After re-checksumming, I 
+loaded the save without trouble, looked at my pokémon, and found a Starmie! So 
+let's see -- its nickname is still "Bulbs", it's still at level 5, still has 20 
+HP, and still only knows TACKLE and GROWL. But its types are WATER and PSYCHIC, 
+it looks like a Starmie, and it sounds like a Starmie. There's some sense to 
+this. Types, sprites, and cries are properties of the species, whereas HP, 
+moves, and other stats are properties of the "instance" of that species. Still, 
+I'm surprised this caused as little trouble as it did. I even fought a Pidgey 
+without a problem!
+
+Interestingly, after saving with my Starmie, some of the save data is still 
+looking like Bulbasaur's. I changed the species in the `wPartySpecies` section, 
+but the species data in `wPartyMon1` still says `99`. The pokémon types still 
+look like Bulbasaur's as well. I wonder if this part of the save data is ever 
+used. It seems like it must be ignored at runtime and replaced with whatever 
+data corresponds to the value in `wPartySpecies`. Its types are stored in 
+`data/baseStats/starmie.asm`. I'll take a look at this later.
