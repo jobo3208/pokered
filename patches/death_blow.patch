@@ -1,0 +1,16 @@
+diff --git a/engine/battle/core.asm b/engine/battle/core.asm
+index 65549f7..7a85e5a 100755
+--- a/engine/battle/core.asm
++++ b/engine/battle/core.asm
+@@ -4874,6 +4874,11 @@ ApplyAttackToEnemyPokemon: ; 3e0df (f:60df)
+ 
+ ApplyDamageToEnemyPokemon: ; 3e142 (f:6142)
+ 	ld hl,W_DAMAGE
++; set W_DAMAGE to wEnemyMonHP to ensure the death blow
++	ld a,[wEnemyMonHP]
++	ld [hli],a
++	ld a,[wEnemyMonHP + 1]
++	ld [hld],a
+ 	ld a,[hli]
+ 	ld b,a
+ 	ld a,[hl]
